@@ -21,26 +21,10 @@ void DetectorAction::BeginOfRunAction(const G4Run *) {
     man->CreateNtuple("Hits1", "Hits1");
     man->CreateNtupleIColumn("Event");
     man->CreateNtupleIColumn("Particle");
-    man->CreateNtupleDColumn("E");
     man->CreateNtupleDColumn("X");
     man->CreateNtupleDColumn("Y");
     man->CreateNtupleDColumn("Z");
-    man->CreateNtupleDColumn("pX");
-    man->CreateNtupleDColumn("pY");
-    man->CreateNtupleDColumn("pZ");
     man->FinishNtuple(0);
-
-    man->CreateNtuple("Hits2", "Hits2");
-    man->CreateNtupleIColumn("Event");
-    man->CreateNtupleIColumn("Particle");
-    man->CreateNtupleDColumn("E");
-    man->CreateNtupleDColumn("X");
-    man->CreateNtupleDColumn("Y");
-    man->CreateNtupleDColumn("Z");
-    man->CreateNtupleDColumn("pX");
-    man->CreateNtupleDColumn("pY");
-    man->CreateNtupleDColumn("pZ");
-    man->FinishNtuple(1);
 }
 
 void DetectorAction::EndOfRunAction(const G4Run *) {

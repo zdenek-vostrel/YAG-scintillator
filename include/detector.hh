@@ -14,6 +14,7 @@ public:
     G4bool ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist);
 private:
     G4int detectorID;
+    G4float threshold = 10 * keV;
 };
 
 #endif //ALFA_DETECTOR_HH
