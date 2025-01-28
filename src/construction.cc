@@ -52,32 +52,6 @@ G4VPhysicalVolume *Construction::Construct() {
                                        0,
                                        true);
 
-    // Active detector 1 construction
-    solidActiveDetector1 = new G4Box("activeDetector1", 0.5 * foil_sizeXY, 0.5 * foil_sizeXY, 1*um);
-    logicActiveDetector1 = new G4LogicalVolume(solidActiveDetector1, worldMaterial, "ActiveDetector");
-
-    activeDetectorVolume1 = new G4PVPlacement(nullptr,
-                                             G4ThreeVector(0, 0,  -0.5 *world_sizeZ + 2*cm + 1 *cm),
-                                              logicActiveDetector1,
-                                             "ActiveDetector",
-                                             logicWorld,
-                                             true,
-                                             0,
-                                             true);
-
-    // Active detector 2 construction
-    solidActiveDetector2 = new G4Box("activeDetector1", 0.5 * foil_sizeXY, 0.5 * foil_sizeXY, 1*um);
-    logicActiveDetector2 = new G4LogicalVolume(solidActiveDetector2, worldMaterial, "ActiveDetector");
-
-    activeDetectorVolume2 = new G4PVPlacement(nullptr,
-                                              G4ThreeVector(0, 0,  0.5 *world_sizeZ - 1 *cm),
-                                              logicActiveDetector2,
-                                              "ActiveDetector",
-                                              logicWorld,
-                                              true,
-                                              0,
-                                              true);
-
     return physWorldVolume;
 }
 
@@ -104,10 +78,6 @@ void Construction::DefineMaterial() {
 }
 
 void Construction::ConstructSDandField() {
-    G4VSensitiveDetector *activeDetector1 = new ActiveDetector("ActiveDetector1", 0);
-    logicActiveDetector1->SetSensitiveDetector(activeDetector1);
-
-    G4VSensitiveDetector *activeDetector2 = new ActiveDetector("ActiveDetector2", 1);
-    logicActiveDetector2->SetSensitiveDetector(activeDetector2);
-
+    G4VSensitiveDetector *activeDetector1 = new ActiveDetector("ActiveDetector", 0);
+    logicFoil->SetSensitiveDetector(activeDetector1);
 }
