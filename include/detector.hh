@@ -6,6 +6,7 @@
 #define ALFA_DETECTOR_HH
 
 #include <G4VSensitiveDetector.hh>
+#include <G4SystemOfUnits.hh>
 
 class ActiveDetector : public G4VSensitiveDetector {
 public:
