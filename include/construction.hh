@@ -29,9 +29,7 @@ private:
     G4Material *worldMaterial, *foilMaterial;
 
     G4GenericMessenger *messenger;
-    G4double width = 1.5; // um
-    G4double temperature = 20; // degree celsius
-    G4double pressure = 1e-6; // Pa
+    G4double width = 10; // mm
 };
 
 #endif //ALFA_CONSTRUCTION_HH

@@ -10,9 +10,7 @@ Construction::Construction(G4double length) {
     len = length;
 
     messenger = new G4GenericMessenger(this, "/construction/", "Parameters for constructions.");
-    messenger->DeclareProperty("width", width, "Foil width in um. Default = 1.5");
-    messenger->DeclareProperty("temperature", temperature, "Temperature in degrees celsius. Default = 20");
-    messenger->DeclareProperty("pressure", pressure, "Pressure in Pa. Default = 1e-6");
+    messenger->DeclareProperty("width", width, "Foil width in mm. Default = 10 mm");
 
     DefineMaterial();
 }
@@ -20,7 +18,6 @@ Construction::Construction(G4double length) {
 Construction::~Construction() = default;
 
 G4VPhysicalVolume *Construction::Construct() {
-    CreateAir();
 
     double world_sizeZ = len;
     double world_sizeXY = 24*cm;
@@ -86,34 +83,24 @@ G4VPhysicalVolume *Construction::Construct() {
 
 void Construction::DefineMaterial() {
     G4NistManager *nist = G4NistManager::Instance();
-//    worldMaterial = nist->FindOrBuildMaterial("G4_Galactic");
-    foilMaterial = nist->FindOrBuildMaterial("G4_Al");
+    worldMaterial = nist->FindOrBuildMaterial("G4_Galactic");
 
-}
-
-void Construction::CreateAir() {
-    G4NistManager* nist = G4NistManager::Instance();
-
-    // Define the molar mass of air (kg/mol)
-    G4double molarMassAir = 0.029; // kg/mol
-
-    // Convert temperature to Kelvin
-    G4double tempK = temperature + 273.15; // Celsius to Kelvin
-
-    // Calculate density using the ideal gas law
-    G4double density = (pressure * molarMassAir) / (8.314 * tempK); // kg/m³
-
-    // Create the air material with the calculated density
-    worldMaterial = new G4Material("CustomAir", density * kg / m3, 3);
-
-    // Define the composition of air
-    G4Element* N = nist->FindOrBuildElement("N");
+    // Define YAG (Y3Al5O12)
+    G4double density = 4.56 * g / cm3; // Density of YAG
+    G4Material* YAG = new G4Material("YAG", density, 3);
+    
+    // Define the elements
+    G4Element* Y = nist->FindOrBuildElement("Y");
+    G4Element* Al = nist->FindOrBuildElement("Al");
     G4Element* O = nist->FindOrBuildElement("O");
-    G4Element* Ar = nist->FindOrBuildElement("Ar");
 
-    worldMaterial->AddElement(N, 0.78);
-    worldMaterial->AddElement(O, 0.21);
-    worldMaterial->AddElement(Ar, 0.01);
+    // Define the composition
+    YAG->AddElement(Y, 3);
+    YAG->AddElement(Al, 5);
+    YAG->AddElement(O, 12);
+
+    foilMaterial = YAG;
+
 }
 
 void Construction::ConstructSDandField() {
