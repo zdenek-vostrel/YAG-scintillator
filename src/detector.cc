@@ -17,13 +17,18 @@ G4bool ActiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist) {
     const G4Track* track = aStep->GetTrack();
     auto particle = track->GetParticleDefinition();
     G4String particleName = particle->GetParticleName();
+    G4double edep = aStep->GetTotalEnergyDeposit();
+
+    G4cout << "Energy deposit: " << edep << G4endl; 
+
       
     // Check if the particle is an alpha particle or a proton
     if (particleName == "alpha" || particleName == "proton") {
         G4double energy = track->GetKineticEnergy();
         
+        // G4cout << "Energy: " << energy << ", threshold: " << threshold << G4endl; 
         // Check if the energy is below the threshold
-        if (energy < threshold) { // Define a threshold for stopping
+        if (energy <= 0) { // Define a threshold for stopping
             G4ThreeVector position = track->GetPosition();
             G4cout << "Alpha particle stopped at: " << position << G4endl;
 

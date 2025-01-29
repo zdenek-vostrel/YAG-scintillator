@@ -98,7 +98,7 @@ class Process(object):
         shellScript += f"#PBS -o '{outputFile.resolve()}'\n"
         shellScript += f"#PBS -q normal\n" # max 24 hours
         shellScript += "\n"
-        shellScript += "source /data2/vyuka/szd/G4_setup.sh\n"
+        shellScript += "source /data2/user_data/atlas/vostrel/UFP/YAG_scintillator/G4_setup.sh\n"
         shellScript += "export QT_DEBUG_PLUGINS=1\n"
         shellScript += "export QT_QPA_PLATFORM='minimal'\n"
         shellScript += "export DISPLAY=localhost:0.0\n"

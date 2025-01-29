@@ -15,7 +15,9 @@ file(COPY ${MACRO_FILES} DESTINATION ${PROJECT_BINARY_DIR})
 add_executable(alfa alfa.cc ${sources} ${headers}
         include/construction.hh
         src/particleGenerator.cc
-        src/detector.cc)
+        src/detector.cc
+        include/physics.hh
+        )
 target_link_libraries(alfa ${Geant4_LIBRARIES})
 
 add_custom_target(alfaCC DEPENDS alfa)

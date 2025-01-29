@@ -11,17 +11,20 @@
 #include <G4SystemOfUnits.hh>
 
 #include "QBBC.hh"
+#include "QGSP_BERT.hh"
 
 #include "include/construction.hh"
 #include "include/action.hh"
+#include "include/physics.hh"
 
 int main(int argc, char** argv){
     auto *runManager = new G4RunManager();
 
-    G4double length = 2.5 * m;
+    G4double length = 1.1 * m;
 
     runManager->SetUserInitialization(new Construction(length));
-    runManager->SetUserInitialization(new QBBC());
+    runManager->SetUserInitialization(new Physics());
+    // runManager->SetUserInitialization(new QBBC());
     runManager->SetUserInitialization(new Action(length));
 
     runManager->Initialize();

@@ -29,7 +29,7 @@ private:
     G4Material *worldMaterial, *foilMaterial;
 
     G4GenericMessenger *messenger;
-    G4double width = 10; // mm
+    G4double width = 10; // um
 };
 
 #endif //ALFA_CONSTRUCTION_HH

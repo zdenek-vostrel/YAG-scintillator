@@ -3,20 +3,17 @@
 //
 
 #include "../include/particleGenerator.hh"
-#include <G4ParticleTable.hh>
 #include <G4SystemOfUnits.hh>
 
 particleGenerator::particleGenerator(G4double length){
+    messenger = new G4GenericMessenger(this, "/particleGun/", "Parameters for constructions.");
+    messenger->DeclareProperty("particleName", particleName, "Name of the particle to be generated. Default alpha.");
+    messenger->DeclareProperty("energy", energy, "Kinetic energy of the generated particle [MeV], default 1 MeV.");
+
     len = length;
     fParticleGun = new G4ParticleGun(1);
 
-    G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-    G4ParticleDefinition* particle
-            = particleTable->FindParticle("alpha");
-    fParticleGun->SetParticleDefinition(particle);
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-    fParticleGun->SetParticleEnergy(5.5 * MeV);
-
 }
 
 particleGenerator::~particleGenerator(){
@@ -25,5 +22,9 @@ particleGenerator::~particleGenerator(){
 
 void particleGenerator::GeneratePrimaries(G4Event *anEvent) {
     fParticleGun->SetParticlePosition(G4ThreeVector(0, 0, -0.5*len + 1 * mm));
+    G4ParticleDefinition* particle
+            = particleTable->FindParticle(particleName);
+    fParticleGun->SetParticleDefinition(particle);
+    fParticleGun->SetParticleEnergy(energy * MeV);
     fParticleGun->GeneratePrimaryVertex(anEvent);
 }

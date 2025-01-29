@@ -4,13 +4,14 @@
 #include <G4LogicalVolume.hh>
 #include <G4PVPlacement.hh>
 #include <G4VPhysicalVolume.hh>
+#include "G4UserLimits.hh"
 #include "../include/detector.hh"
 
 Construction::Construction(G4double length) {
     len = length;
 
     messenger = new G4GenericMessenger(this, "/construction/", "Parameters for constructions.");
-    messenger->DeclareProperty("width", width, "Foil width in mm. Default = 10 mm");
+    messenger->DeclareProperty("width", width, "Foil width in um. Default = 10 um");
 
     DefineMaterial();
 }
@@ -43,14 +44,20 @@ G4VPhysicalVolume *Construction::Construct() {
     solidFoil = new G4Box("Foil", 0.5 * foil_sizeXY, 0.5 * foil_sizeXY, 0.5 * foil_sizeZ);
     logicFoil = new G4LogicalVolume(solidFoil, foilMaterial, "Foil");
 
+    // Create G4UserLimits and set the maximum step size in the foil
+    G4UserLimits* userLimits = new G4UserLimits(); 
+    userLimits->SetMaxAllowedStep(1*um); 
+    logicFoil->SetUserLimits(userLimits);
+
     physFoilVolume = new G4PVPlacement(nullptr,
-                                       G4ThreeVector(0., 0.,  -0.5 *world_sizeZ + 2*cm),
+                                       G4ThreeVector(0., 0., 0.),
                                        logicFoil,
                                        "Foil",
                                        logicWorld,
                                        false,
                                        0,
                                        true);
+
 
     return physWorldVolume;
 }
