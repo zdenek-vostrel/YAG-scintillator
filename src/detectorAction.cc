@@ -16,11 +16,14 @@ DetectorAction::~DetectorAction() = default;
 void DetectorAction::BeginOfRunAction(const G4Run *) {
     auto *man = G4AnalysisManager::Instance();
 
+    G4cout << "outfile: " << outFile << G4endl;
     man->OpenFile(outFile);
 
     man->CreateNtuple("Hits1", "Hits1");
     man->CreateNtupleIColumn("Event");
     man->CreateNtupleIColumn("Particle");
+    man->CreateNtupleDColumn("EnergyDeposit");
+    man->CreateNtupleDColumn("KineticEnergy");
     man->CreateNtupleDColumn("X");
     man->CreateNtupleDColumn("Y");
     man->CreateNtupleDColumn("Z");

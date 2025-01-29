@@ -17,31 +17,33 @@ G4bool ActiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist) {
     const G4Track* track = aStep->GetTrack();
     auto particle = track->GetParticleDefinition();
     G4String particleName = particle->GetParticleName();
-    G4double edep = aStep->GetTotalEnergyDeposit();
-
-    G4cout << "Energy deposit: " << edep << G4endl; 
-
       
     // Check if the particle is an alpha particle or a proton
     if (particleName == "alpha" || particleName == "proton") {
         G4double energy = track->GetKineticEnergy();
+        G4double edep = aStep->GetTotalEnergyDeposit();
         
-        // G4cout << "Energy: " << energy << ", threshold: " << threshold << G4endl; 
-        // Check if the energy is below the threshold
-        if (energy <= 0) { // Define a threshold for stopping
-            G4ThreeVector position = track->GetPosition();
-            G4cout << "Alpha particle stopped at: " << position << G4endl;
+        G4ThreeVector position = track->GetPosition();
 
-            G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
-            G4int particleTypeID = particle->GetPDGEncoding();
+        // G4cout << "Energy: " << energy  << G4endl; 
+        // G4cout << "Energy deposit: " << edep << " " << position << G4endl; 
 
-            auto *man = G4AnalysisManager::Instance();
-            man->FillNtupleIColumn(detectorID, 0, evt); // event
-            man->FillNtupleIColumn(detectorID, 1, particleTypeID); // Particle (particle type)
-            man->FillNtupleDColumn(detectorID, 2, position[0]); // X
-            man->FillNtupleDColumn(detectorID, 3, position[1]); // Y
-            man->FillNtupleDColumn(detectorID, 4, position[2]); // Z
-        }
+        G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+        G4int particleTypeID = particle->GetPDGEncoding();
+
+        auto *man = G4AnalysisManager::Instance();
+        man->FillNtupleIColumn(0, evt); // event
+        man->FillNtupleIColumn(1, particleTypeID); // Particle (particle type)
+        man->FillNtupleDColumn(2, edep); // Energy deposit
+        man->FillNtupleDColumn(3, energy); // kinetic energy
+        man->FillNtupleDColumn(4, position[0]); // X
+        man->FillNtupleDColumn(5, position[1]); // Y
+        man->FillNtupleDColumn(6, position[2]); // Z
+        man->AddNtupleRow(0);
+
+        // if (energy <= 0){
+        //     G4cout << "Alpha particle stopped at: " << position << G4endl;
+        // }
     }
     
     return true; 

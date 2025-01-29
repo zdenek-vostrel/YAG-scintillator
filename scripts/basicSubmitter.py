@@ -12,8 +12,8 @@ submitJobs = True
 def main():
     nParticles = 1e2
     particle = np.array(["alpha"])
-    energy = np.array([1]) # MeV
-    widths = np.array([10]) # mm
+    energy = np.array([5]) # MeV
+    widths = np.array([20]) # mm
 
     proc = process.Process(r"/data2/user_data/atlas/vostrel/UFP/YAG_scintillator/build/alfa")
 

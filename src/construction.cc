@@ -21,7 +21,7 @@ Construction::~Construction() = default;
 G4VPhysicalVolume *Construction::Construct() {
 
     double world_sizeZ = len;
-    double world_sizeXY = 24*cm;
+    double world_sizeXY = 10*cm + width * um;
 
     double foil_sizeZ = width * um;
     double foil_sizeXY = world_sizeXY;
@@ -50,7 +50,7 @@ G4VPhysicalVolume *Construction::Construct() {
     logicFoil->SetUserLimits(userLimits);
 
     physFoilVolume = new G4PVPlacement(nullptr,
-                                       G4ThreeVector(0., 0., 0.),
+                                       G4ThreeVector(0., 0., 0.5 * foil_sizeZ),
                                        logicFoil,
                                        "Foil",
                                        logicWorld,
