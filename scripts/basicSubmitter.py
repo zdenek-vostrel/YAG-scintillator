@@ -10,9 +10,9 @@ maxParallelProcesses = 1
 submitJobs = True
 
 def main():
-    nParticles = 1e2
-    particle = np.array(["alpha"])
-    energy = np.array([5]) # MeV
+    nParticles = 2e2
+    particle = np.array(["proton"])
+    energy = np.array([0.05*(1+x) for x in range(60)]) # MeV
     widths = np.array([20]) # mm
 
     proc = process.Process(r"/data2/user_data/atlas/vostrel/UFP/YAG_scintillator/build/alfa")
@@ -21,7 +21,7 @@ def main():
         for e in energy:
             for p in particle:
                 dataDir = pathlib.Path("data/")
-                fPath = dataDir.joinpath("w_"+str(w).replace(".", "_")).joinpath(str(e)).joinpath("E_"+str(e).replace(".", "_")).resolve()
+                fPath = dataDir.joinpath("w_"+str(w).replace(".", "_")).joinpath(str(p)).joinpath("E_"+str(e).replace(".", "_")).resolve()
                 settings = {'fPath': str(fPath),
                             "/output/file": str(fPath.joinpath("output.root")),
                             "/construction/width": w,
