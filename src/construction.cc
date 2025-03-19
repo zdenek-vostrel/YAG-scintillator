@@ -12,6 +12,7 @@ Construction::Construction(G4double length) {
 
     messenger = new G4GenericMessenger(this, "/construction/", "Parameters for constructions.");
     messenger->DeclareProperty("width", width, "Foil width in um. Default = 10 um");
+    messenger->DeclareProperty("AlWidth", AlWidth, "Aluminum foil width in um. If zero, there will be no aluminum foil. Default = 0 um");
 
     DefineMaterial();
 }
@@ -59,6 +60,23 @@ G4VPhysicalVolume *Construction::Construct() {
                                        true);
 
 
+    if (AlWidth != 0){
+        double AlFoil_sizeZ = AlWidth * um;
+
+        // Foil construction
+        solidAlFoil = new G4Box("AlFoil", 0.5 * foil_sizeXY, 0.5 * foil_sizeXY, 0.5 * AlFoil_sizeZ);
+        logicAlFoil = new G4LogicalVolume(solidAlFoil, aluminumMaterial, "AlFoil");
+
+        physAlFoilVolume = new G4PVPlacement(nullptr,
+                                        G4ThreeVector(0., 0., - 10 * um - 0.5 * AlFoil_sizeZ),
+                                        logicAlFoil,
+                                        "AlFoil",
+                                        logicWorld,
+                                        false,
+                                        0,
+                                        true);
+    }
+
     return physWorldVolume;
 }
 
@@ -81,6 +99,8 @@ void Construction::DefineMaterial() {
     YAG->AddElement(O, 12);
 
     foilMaterial = YAG;
+
+    aluminumMaterial = nist->FindOrBuildMaterial("G4_Al");
 
 }
 
